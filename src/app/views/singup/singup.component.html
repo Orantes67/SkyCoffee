@@ -1,0 +1,53 @@
+<section class="min-h-screen flex items-center justify-center bg-[#0d0d0d] px-6">
+
+  <div class="bg-[#1a1a1a] p-10 rounded-xl w-full max-w-md border border-[#d4a056]/40">
+    
+    <h2 class="text-3xl font-serif text-[#d4a056] text-center mb-6">
+      Crear cuenta SkyCoffee
+    </h2>
+
+    <form class="space-y-6">
+
+      <!-- Nombre -->
+      <div>
+        <label class="text-sm text-gray-300">Nombre</label>
+        <input type="text"
+               class="w-full mt-1 p-3 bg-black/40 border border-gray-700 rounded-md text-white focus:border-[#d4a056] focus:outline-none">
+      </div>
+
+      <!-- Correo -->
+      <div>
+        <label class="text-sm text-gray-300">Correo</label>
+        <input type="email"
+               class="w-full mt-1 p-3 bg-black/40 border border-gray-700 rounded-md text-white focus:border-[#d4a056] focus:outline-none">
+      </div>
+
+      <!-- Teléfono -->
+      <div>
+        <label class="text-sm text-gray-300">Teléfono</label>
+        <input type="text"
+               class="w-full mt-1 p-3 bg-black/40 border border-gray-700 rounded-md text-white focus:border-[#d4a056] focus:outline-none">
+      </div>
+
+      <!-- Contraseña -->
+      <div>
+        <label class="text-sm text-gray-300">Contraseña</label>
+        <input type="password"
+               class="w-full mt-1 p-3 bg-black/40 border border-gray-700 rounded-md text-white focus:border-[#d4a056] focus:outline-none">
+      </div>
+
+      <button
+        class="w-full py-3 bg-[#d4a056] text-black font-semibold rounded-lg hover:bg-[#c28e40] transition">
+        Registrarme
+      </button>
+
+    </form>
+
+    <p class="text-center text-gray-400 text-sm mt-4">
+      ¿Ya tienes cuenta? 
+      <button routerLink="/login" class="text-[#d4a056] hover:underline">Inicia sesión</button>
+    </p>
+
+  </div>
+
+</section>

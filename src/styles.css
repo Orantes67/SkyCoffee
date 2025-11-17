@@ -1,2 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0d0d0d;
+  color: #f2f2f2;
+}
+
+.font-serif {
+  font-family: 'Playfair Display', serif;
+}

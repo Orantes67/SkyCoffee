@@ -1,0 +1,118 @@
+<nav class="w-full fixed top-0 z-50 bg-black/70 backdrop-blur-md text-white">
+  <div class="max-w-7xl mx-auto flex items-center justify-between p-4">
+    <h1 class="text-3xl font-serif text-[#d4a056]">SkyCoffee</h1>
+    <ul class="hidden md:flex space-x-8 text- font-light">
+      <li class="hover:text-[#d4a056] cursor-pointer">Inicio</li>
+      <li class="hover:text-[#d4a056] cursor-pointer">Menú</li>
+      <li class="hover:text-[#d4a056] cursor-pointer">Poetas</li>
+      <li class="hover:text-[#d4a056] cursor-pointer">Contacto</li>
+        <button 
+          routerLink="/login"
+          class="px-4 py-1 border border-[#d4a056] rounded-lg hover:bg-[#d4a056] hover:text-black transition">
+            Login
+        </button>
+        <button 
+          routerLink="/singup"
+          class="px-4 py-1 bg-[#d4a056] text-black rounded-lg hover:bg-[#c28e40] transition">
+            Signup
+        </button>
+    </ul>
+    <button class="md:hidden text-3xl">☰</button>
+  </div>
+</nav>
+<section class="h-screen w-full bg-cover bg-center flex items-center justify-center" 
+  style="background-image: url('assets/local.jpeg');">
+
+  <div class="bg-black/60 p-10 rounded-xl text-center max-w-2xl">
+    <h2 class="text-4xl md:text-6xl font-serif text-[#d4a056] mb-4">
+      Donde el aroma se vuelve verso
+    </h2>
+    <p class="text-lg text-gray-200 mb-6">
+      SkyCoffee — Cada taza narra una historia, cada sorbo es un poema.
+    </p>
+    <button class="px-6 py-3 bg-[#d4a056] text-black rounded-lg font-semibold hover:bg-[#c28e40] transition">
+      Explorar menú
+    </button>
+  </div>
+</section>
+<section class="max-w-7xl mx-auto py-20 px-6">
+  <h3 class="text-3xl font-serif text-center text-[#d4a056] mb-12">Poetas que inspiran</h3>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+    
+    <!-- Neruda -->
+    <div class="bg-[#1a1a1a] p-4 rounded-xl border border-[#d4a056]/40">
+      <img src="image/Pablo_Neruda_1963.jpg" class="rounded-lg w-full h-80 object-cover">
+      <h4 class="text-xl mt-3 text-[#d4a056] font-serif">Pablo Neruda</h4>
+      <p class="text-gray-300 text-sm">El amor que huele a café.</p>
+    </div>
+
+    <!-- Pizarnik -->
+    <div class="bg-[#1a1a1a] p-4 rounded-xl border border-[#d4a056]/40">
+      <img src="image/Pizarnik_byn.jpg" class="rounded-lg w-full h-80 object-cover">
+      <h4 class="text-xl mt-3 text-[#d4a056] font-serif">Alejandra Pizarnik</h4>
+      <p class="text-gray-300 text-sm">Silencios que despiertan.</p>
+    </div>
+
+    <!-- París -->
+    <div class="bg-[#1a1a1a] p-4 rounded-xl border border-[#d4a056]/40">
+      <img src="image/the-eiffel-tower-1744574_1280.jpg" class="rounded-lg w-full h-80 object-cover">
+      <h4 class="text-xl mt-3 text-[#d4a056] font-serif">París</h4>
+      <p class="text-gray-300 text-sm">La cuna del verso.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- NUESTRA HISTORIA -->
+<section class="max-w-7xl mx-auto py-20 px-6 flex flex-col md:flex-row gap-12 items-center">
+  <img src="image/local.jpeg" class="w-full md:w-1/2 rounded-xl shadow-lg">
+
+  <div class="md:w-1/2">
+    <h3 class="text-3xl font-serif text-[#d4a056] mb-4">Nuestra historia</h3>
+    <p class="text-gray-300 leading-relaxed mb-4">
+      En SkyCoffee creemos que el café no solo se bebe: se escucha, se siente, se escribe.
+      Entre aromas tostados y ecos de poesía, nació este espacio para quienes buscan una
+      pausa con significado.
+    </p>
+    <p class="text-gray-400 text-sm">
+      Aquí celebramos la tradición cafetera y la belleza de la palabra.
+    </p>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto py-20 px-6">
+  <h3 class="text-3xl font-serif text-center text-[#d4a056] mb-12">Lo más pedido</h3>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+    <!-- Producto 1 -->
+    <div class="bg-[#1a1a1a] p-4 rounded-xl border border-[#d4a056]/40">
+      <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348" class="rounded-lg w-full h-64 object-cover">
+      <h4 class="text-xl mt-3 text-[#d4a056] font-serif">Café Latte</h4>
+      <p class="text-gray-300 text-sm">Cremoso, suave y perfecto para empezar el día.</p>
+    </div>
+
+    <!-- Producto 2 -->
+    <div class="bg-[#1a1a1a] p-4 rounded-xl border border-[#d4a056]/40">
+      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" class="rounded-lg w-full h-64 object-cover">
+      <h4 class="text-xl mt-3 text-[#d4a056] font-serif">Brownie Poético</h4>
+      <p class="text-gray-300 text-sm">Chocolate profundo como un verso nocturno.</p>
+    </div>
+
+    <!-- Producto 3 -->
+    <div class="bg-[#1a1a1a] p-4 rounded-xl border border-[#d4a056]/40">
+      <img src="https://lamafia.es/wp-content/uploads/2019/07/capuccino-italiano.png" class="rounded-lg w-full h-64 object-cover">
+      <h4 class="text-xl mt-3 text-[#d4a056] font-serif">Capuccino París</h4>
+      <p class="text-gray-300 text-sm">Un toque europeo para los amantes del arte.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-12 text-center border-t border-[#d4a056]/30">
+  <p class="text-lg font-serif text-[#d4a056]">“El café es un poema que despierta.”</p>
+  <p class="text-sm text-gray-500 mt-2">SkyCoffee © 2025 – Todos los derechos reservados</p>
+</footer>
+
