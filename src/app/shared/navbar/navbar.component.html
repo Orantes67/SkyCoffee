@@ -1,0 +1,127 @@
+<nav class="w-full fixed top-0 z-50 bg-black/70 backdrop-blur-md text-white">
+  <div class="max-w-7xl mx-auto flex items-center justify-between p-4">
+    <!-- Logo -->
+    <h1 class="text-3xl font-serif text-[#d4a056] cursor-pointer" routerLink="/">
+      SkyCoffee
+    </h1>
+
+    <!-- Desktop Menu -->
+    <ul class="hidden md:flex space-x-8 text-sm font-light items-center">
+      <li>
+        <a routerLink="/home" routerLinkActive="text-[#d4a056]" class="hover:text-[#d4a056] cursor-pointer transition-colors">
+          Inicio
+        </a>
+      </li>
+      <li>
+        <a routerLink="/menu" routerLinkActive="text-[#d4a056]" class="hover:text-[#d4a056] cursor-pointer transition-colors">
+          Menú
+        </a>
+      </li>
+      <li>
+        <a routerLink="/location" routerLinkActive="text-[#d4a056]" class="hover:text-[#d4a056] cursor-pointer transition-colors">
+          Ubicación
+        </a>
+      </li>
+
+      <!-- Admin Link -->
+      <li *ngIf="isAdmin()">
+        <a routerLink="/admin/dashboard" routerLinkActive="text-[#d4a056]" class="hover:text-[#d4a056] cursor-pointer transition-colors">
+          Admin
+        </a>
+      </li>
+
+      <!-- Auth Buttons -->
+      <ng-container *ngIf="!isLoggedIn(); else loggedIn">
+        <li>
+          <button routerLink="/login" class="px-4 py-1 border border-[#d4a056] rounded-lg hover:bg-[#d4a056] hover:text-black transition">
+            Login
+          </button>
+        </li>
+        <li>
+          <button routerLink="/register" class="px-4 py-1 bg-[#d4a056] text-black rounded-lg hover:bg-[#c28e40] transition">
+            Signup
+          </button>
+        </li>
+      </ng-container>
+
+      <ng-template #loggedIn>
+        <!-- User Menu -->
+        <li class="relative">
+          <button (click)="toggleUserMenu()" class="flex items-center gap-2 hover:text-[#d4a056] transition-colors">
+            <img *ngIf="currentUser()?.foto_perfil; else defaultAvatar"
+                 [src]="currentUser()!.foto_perfil"
+                 [alt]="currentUser()!.nombre"
+                 class="w-8 h-8 rounded-full object-cover border-2 border-[#d4a056]">
+            <ng-template #defaultAvatar>
+              <div class="w-8 h-8 rounded-full bg-[#d4a056] flex items-center justify-center text-black font-semibold">
+                {{ firstLetter() }}
+              </div>
+            </ng-template>
+            <span>{{ firstName() }}</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+
+          <!-- Dropdown -->
+          <div *ngIf="userMenuOpen()" class="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-[#d4a056]/40 rounded-lg shadow-xl py-2">
+            <a routerLink="/profile" (click)="closeUserMenu()" class="block px-4 py-2 text-white hover:bg-[#d4a056]/20 hover:text-[#d4a056] transition-colors">
+              Mi Perfil
+            </a>
+            <button (click)="logout()" class="w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/20 transition-colors">
+              Cerrar Sesión
+            </button>
+          </div>
+        </li>
+      </ng-template>
+    </ul>
+
+    <!-- Mobile Menu Button -->
+    <button (click)="toggleMobileMenu()" class="md:hidden text-3xl hover:text-[#d4a056] transition-colors">
+      {{ mobileMenuOpen() ? '✕' : '☰' }}
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div *ngIf="mobileMenuOpen()" class="md:hidden bg-black/90 backdrop-blur-md border-t border-[#d4a056]/30">
+    <ul class="flex flex-col space-y-2 p-4">
+      <li><a routerLink="/home" (click)="closeMobileMenu()" routerLinkActive="text-[#d4a056]" class="block py-2 hover:text-[#d4a056] transition-colors">Inicio</a></li>
+      <li><a routerLink="/menu" (click)="closeMobileMenu()" routerLinkActive="text-[#d4a056]" class="block py-2 hover:text-[#d4a056] transition-colors">Menú</a></li>
+      <li><a routerLink="/location" (click)="closeMobileMenu()" routerLinkActive="text-[#d4a056]" class="block py-2 hover:text-[#d4a056] transition-colors">Ubicación</a></li>
+
+      <li *ngIf="isAdmin()" class="border-t border-[#d4a056]/30 pt-2 mt-2">
+        <a routerLink="/admin/dashboard" (click)="closeMobileMenu()" routerLinkActive="text-[#d4a056]" class="block py-2 hover:text-[#d4a056] transition-colors">
+          📊 Admin Dashboard
+        </a>
+      </li>
+
+      <ng-container *ngIf="!isLoggedIn(); else loggedInMobile">
+        <li class="border-t border-[#d4a056]/30 pt-2 mt-2">
+          <button routerLink="/login" (click)="closeMobileMenu()" class="w-full px-4 py-2 border border-[#d4a056] rounded-lg hover:bg-[#d4a056] hover:text-black transition text-center">Login</button>
+        </li>
+        <li>
+          <button routerLink="/register" (click)="closeMobileMenu()" class="w-full px-4 py-2 bg-[#d4a056] text-black rounded-lg hover:bg-[#c28e40] transition text-center">Signup</button>
+        </li>
+      </ng-container>
+
+      <ng-template #loggedInMobile>
+        <li class="border-t border-[#d4a056]/30 pt-2 mt-2">
+          <div class="flex items-center gap-2 py-2">
+            <img *ngIf="currentUser()?.foto_perfil; else defaultAvatarMobile"
+                 [src]="currentUser()!.foto_perfil"
+                 [alt]="currentUser()!.nombre"
+                 class="w-10 h-10 rounded-full object-cover border-2 border-[#d4a056]">
+            <ng-template #defaultAvatarMobile>
+              <div class="w-10 h-10 rounded-full bg-[#d4a056] flex items-center justify-center text-black font-semibold">
+                {{ firstLetter() }}
+              </div>
+            </ng-template>
+            <span>{{ currentUser()?.nombre }}</span>
+          </div>
+        </li>
+        <li><a routerLink="/profile" (click)="closeMobileMenu()" class="block py-2 hover:text-[#d4a056] transition-colors">Mi Perfil</a></li>
+        <li><button (click)="logout()" class="w-full text-left py-2 text-red-400 hover:text-red-300 transition-colors">Cerrar Sesión</button></li>
+      </ng-template>
+    </ul>
+  </div>
+</nav>

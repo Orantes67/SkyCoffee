@@ -1,0 +1,157 @@
+<div class="min-h-screen bg-gradient-to-b from-amber-50 to-white">
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-r from-amber-600 to-orange-600 text-white py-16">
+    <div class="container mx-auto px-4">
+      <h1 class="text-5xl font-bold mb-4 text-center">☕ Nuestro Menú</h1>
+      <p class="text-xl text-center text-amber-100">
+        Descubre nuestros deliciosos productos
+      </p>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4 py-12">
+
+    <!-- Category Filter -->
+    <div class="flex justify-center gap-3 mb-12 flex-wrap">
+      <button (click)="filterByCategory(null)"
+              [class]="getCategoryButtonClass(null)"
+              class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105">
+        Todos
+      </button>
+      <button (click)="filterByCategory('bebida')"
+              [class]="getCategoryButtonClass('bebida')"
+              class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105">
+        ☕ Bebidas
+      </button>
+      <button (click)="filterByCategory('postre')"
+              [class]="getCategoryButtonClass('postre')"
+              class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105">
+        🍰 Postres
+      </button>
+      <button (click)="filterByCategory('snack')"
+              [class]="getCategoryButtonClass('snack')"
+              class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105">
+        🥐 Snacks
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading()) {
+      <div class="flex justify-center items-center py-20">
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-amber-600 mx-auto mb-4"></div>
+          <p class="text-gray-600">Cargando menú...</p>
+        </div>
+      </div>
+    }
+
+    <!-- Error -->
+    @if (error()) {
+      <div class="max-w-md mx-auto bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg">
+        {{ error() }}
+      </div>
+    }
+
+    <!-- Products Grid -->
+    @if (!loading() && !error()) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        @for (product of filteredProducts(); track product.id) {
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all transform hover:-translate-y-2 duration-300">
+            
+            <!-- Image -->
+            <div class="relative h-56 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+
+              @if (product.imagen) {
+                <img [src]="product.imagen" 
+                     [alt]="product.nombre"
+                     class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+              } @else {
+                <div class="w-full h-full flex items-center justify-center">
+                  <svg class="w-24 h-24 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+              }
+
+              <!-- Not Available -->
+              @if (product.disponible === false) {
+                <div class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+                  <span class="bg-red-500 text-white px-4 py-2 rounded-full font-semibold">
+                    No Disponible
+                  </span>
+                </div>
+              }
+
+              <!-- Category Badge -->
+              <span [class]="getCategoryBadgeClass(product.categoria)">
+                {{ getCategoryEmoji(product.categoria) }} {{ getCategoryLabel(product.categoria) }}
+              </span>
+            </div>
+
+            <!-- Info -->
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-800 mb-2">{{ product.nombre }}</h3>
+              <p class="text-gray-600 text-sm mb-4 line-clamp-3 min-h-[60px]">
+                {{ product.descripcion }}
+              </p>
+              
+              <div class="flex justify-between items-center">
+                <span class="text-3xl font-bold text-amber-600">
+                  ${{ product.precio.toFixed(2) }}
+                </span>
+                
+                @if (product.disponible !== false) {
+                  <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+                    Disponible
+                  </span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (filteredProducts().length === 0) {
+        <div class="text-center py-20">
+          <svg class="mx-auto h-24 w-24 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p class="mt-4 text-xl text-gray-500">
+            {{ selectedCategory() ? 'No hay productos en esta categoría' : 'El menú está vacío' }}
+          </p>
+        </div>
+      }
+    }
+
+    <!-- Stats Section -->
+    @if (!loading() && filteredProducts().length > 0) {
+      <div class="mt-16 bg-gradient-to-r from-amber-100 to-orange-100 rounded-2xl p-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+
+          <div>
+            <div class="text-4xl font-bold text-amber-700">{{ totalCount() }}</div>
+            <div class="text-amber-600 font-medium mt-2">Productos</div>
+          </div>
+
+          <div>
+            <div class="text-4xl font-bold text-amber-700">{{ bebidasCount() }}</div>
+            <div class="text-amber-600 font-medium mt-2">Bebidas</div>
+          </div>
+
+          <div>
+            <div class="text-4xl font-bold text-amber-700">{{ postresCount() }}</div>
+            <div class="text-amber-600 font-medium mt-2">Postres</div>
+          </div>
+
+          <div>
+            <div class="text-4xl font-bold text-amber-700">{{ disponiblesCount() }}</div>
+            <div class="text-amber-600 font-medium mt-2">Disponibles</div>
+          </div>
+
+        </div>
+      </div>
+    }
+  </div>
+</div>

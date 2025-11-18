@@ -1,1 +1,17 @@
-<router-outlet></router-outlet>
+<div class="min-h-screen flex flex-col bg-black text-white">
+  <app-navbar />
+
+  <main class="flex-1 pt-16">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer con tu estilo -->
+  <footer class="py-12 text-center border-t border-[#d4a056]/30 bg-black">
+    <p class="text-lg font-serif text-[#d4a056] mb-2">
+      "El café es un poema que despierta."
+    </p>
+    <p class="text-sm text-gray-500">
+      SkyCoffee © 2025 – Todos los derechos reservados
+    </p>
+  </footer>
+</div>

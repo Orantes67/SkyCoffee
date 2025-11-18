@@ -1,0 +1,79 @@
+import { Component, OnInit, signal } from '@angular/core';
+import { UsuarioService } from '../../../core/services/usuario.service';
+import { ProductoService } from '../../../core/services/producto.service';
+import { AuthService } from '../../../core/services/auth.service';
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  standalone: true
+})
+export class DashboardComponent implements OnInit {
+  stats = signal({
+    totalUsers: 0,
+    adminUsers: 0,
+    clientUsers: 0,
+    totalProducts: 0,
+    availableProducts: 0,
+    bebidas: 0,
+    postres: 0,
+    snacks: 0,
+    avgPrice: '0.00'
+  });
+
+ 
+  constructor(
+    private usuarioService: UsuarioService,
+    private productService: ProductoService,
+    private authService: AuthService
+  ) {}
+
+get currentUser() {
+  return this.authService.currentUser;
+}
+
+
+  ngOnInit() {
+    this.loadStats();
+  }
+
+  loadStats() {
+    // Load users
+    this.usuarioService.getAllUsuarios().subscribe({
+      next: (users) => {
+        const adminCount = users.filter(u => u.rol === 'admin').length;
+        const clientCount = users.filter(u => u.rol === 'cliente').length;
+
+        this.stats.update(s => ({
+          ...s,
+          totalUsers: users.length,
+          adminUsers: adminCount,
+          clientUsers: clientCount
+        }));
+      }
+    });
+
+    // Load products
+    this.productService.getAllProducts().subscribe({
+      next: (products) => {
+        const availableCount = products.filter(p => p.disponible !== false).length;
+        const bebidasCount = products.filter(p => p.categoria === 'bebida').length;
+        const postresCount = products.filter(p => p.categoria === 'postre').length;
+        const snacksCount = products.filter(p => p.categoria === 'snack').length;
+
+        const totalPrice = products.reduce((sum, p) => sum + p.precio, 0);
+        const avgPrice = products.length > 0 ? (totalPrice / products.length).toFixed(2) : '0.00';
+
+        this.stats.update(s => ({
+          ...s,
+          totalProducts: products.length,
+          availableProducts: availableCount,
+          bebidas: bebidasCount,
+          postres: postresCount,
+          snacks: snacksCount,
+          avgPrice
+        }));
+      }
+    });
+  }
+}

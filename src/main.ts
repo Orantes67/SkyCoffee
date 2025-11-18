@@ -1,14 +1,13 @@
+// src/main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
-import { appConfig } from './app/app.config';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { routes } from './app/app.routes';
 
 bootstrapApplication(AppComponent, {
-  ...appConfig,
   providers: [
-    ...(appConfig.providers || []),
-    provideRouter(routes)
+    provideRouter(routes),
+    provideHttpClient(withInterceptorsFromDi()) // ESTO ES LO QUE FALTABA
   ]
-})
-.catch(err => console.error(err));
+}).catch((err) => console.error(err));

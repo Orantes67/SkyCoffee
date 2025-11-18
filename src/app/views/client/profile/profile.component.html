@@ -1,0 +1,127 @@
+<div class="min-h-screen bg-gradient-to-b from-amber-50 to-white py-12">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">Mi Perfil</h1>
+      <p class="text-gray-600">Administra tu información personal</p>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+      <!-- Cover -->
+      <div class="h-32 bg-gradient-to-r from-amber-600 to-orange-600"></div>
+
+      <!-- Profile Content -->
+      <div class="px-8 pb-8">
+        <!-- Photo -->
+        <div class="flex justify-center -mt-16 mb-8">
+          <div class="relative">
+            <ng-container *ngIf="previewUrl() || currentUser()?.foto_perfil; else defaultAvatar">
+              <img [src]="previewUrl() || currentUser()!.foto_perfil" 
+                   [alt]="currentUser()?.nombre"
+                   class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-xl">
+            </ng-container>
+            <ng-template #defaultAvatar>
+              <div class="w-32 h-32 rounded-full bg-amber-500 flex items-center justify-center border-4 border-white shadow-xl">
+                <span class="text-5xl text-white font-bold">
+  {{ (currentUser()?.nombre ?? ' ')[0].toUpperCase() }}
+</span>
+ </div>
+            </ng-template>
+
+            <label class="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 cursor-pointer shadow-lg transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              <input type="file" class="hidden" accept="image/*" (change)="onFileSelected($event)">
+            </label>
+          </div>
+        </div>
+
+        <div *ngIf="uploadingImage()" class="text-center mb-6 flex items-center justify-center gap-2 text-blue-600">
+          <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+          <span class="text-sm">Subiendo imagen...</span>
+        </div>
+
+        <!-- Edit Toggle -->
+        <div *ngIf="!editMode(); else editForm">
+          <div class="text-center mb-8">
+            <button (click)="enableEditMode()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+              Editar Perfil
+            </button>
+          </div>
+
+          <!-- View Mode -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Nombre</label>
+              <p class="text-lg font-semibold text-gray-800">{{ currentUser()?.nombre }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Correo</label>
+              <p class="text-lg font-semibold text-gray-800">{{ currentUser()?.correo }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Teléfono</label>
+              <p class="text-lg font-semibold text-gray-800">{{ currentUser()?.telefono }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Rol</label>
+              <span [class]="currentUser()?.rol === 'admin' 
+                ? 'inline-flex px-3 py-1 rounded-full text-sm font-semibold bg-purple-100 text-purple-800'
+                : 'inline-flex px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800'">
+                {{ currentUser()?.rol === 'admin' ? 'Administrador' : 'Cliente' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Form -->
+        <ng-template #editForm>
+          <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
+                <input type="text" formControlName="nombre" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Correo</label>
+                <input type="email" formControlName="correo" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
+                <input type="tel" formControlName="telefono" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all">
+              </div>
+            </div>
+
+            <div *ngIf="successMessage()" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+              {{ successMessage() }}
+            </div>
+
+            <div *ngIf="errorMessage()" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              {{ errorMessage() }}
+            </div>
+
+            <div class="flex gap-3">
+              <button type="button" (click)="cancelEdit()" class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                Cancelar
+              </button>
+              <button type="submit" [disabled]="profileForm.invalid || saving()" class="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
+                <ng-container *ngIf="saving(); else saveText">
+                  <span class="flex items-center justify-center gap-2">
+                    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Guardando...
+                  </span>
+                </ng-container>
+                <ng-template #saveText>Guardar Cambios</ng-template>
+              </button>
+            </div>
+          </form>
+        </ng-template>
+
+      </div>
+    </div>
+  </div>
+</div>

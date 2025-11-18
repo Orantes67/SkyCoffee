@@ -1,0 +1,161 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Gestión de Productos</h1>
+    <a routerLink="/admin/products/new" 
+       class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg 
+              transition-colors duration-200 flex items-center gap-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      Nuevo Producto
+    </a>
+  </div>
+
+  <!-- Category Filter -->
+  <div class="mb-6 flex gap-2 flex-wrap">
+    <button (click)="filterByCategory(null)"
+            [class]="getCategoryButtonClass(null)"
+            class="px-4 py-2 rounded-lg transition-colors">
+      Todos
+    </button>
+    <button (click)="filterByCategory('bebida')"
+            [class]="getCategoryButtonClass('bebida')"
+            class="px-4 py-2 rounded-lg transition-colors">
+      Bebidas
+    </button>
+    <button (click)="filterByCategory('postre')"
+            [class]="getCategoryButtonClass('postre')"
+            class="px-4 py-2 rounded-lg transition-colors">
+      Postres
+    </button>
+    <button (click)="filterByCategory('snack')"
+            [class]="getCategoryButtonClass('snack')"
+            class="px-4 py-2 rounded-lg transition-colors">
+      Snacks
+    </button>
+    <button (click)="filterByCategory('otros')"
+            [class]="getCategoryButtonClass('otros')"
+            class="px-4 py-2 rounded-lg transition-colors">
+      Otros
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Products Grid -->
+  @if (!loading() && !error()) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      @for (product of filteredProducts(); track product.id) {
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+          
+          <!-- Product Image -->
+          <div class="relative h-48 bg-gray-200">
+            @if (product.imagen) {
+              <img [src]="product.imagen" 
+                   [alt]="product.nombre"
+                   class="w-full h-full object-cover">
+            } @else {
+              <div class="w-full h-full flex items-center justify-center">
+                <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+              </div>
+            }
+            
+            <!-- Category Badge -->
+            <span [class]="getCategoryBadgeClass(product.categoria)">
+              {{ getCategoryLabel(product.categoria) }}
+            </span>
+          </div>
+
+          <!-- Product Info -->
+          <div class="p-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ product.nombre }}</h3>
+            <p class="text-gray-600 text-sm mb-3 line-clamp-2">{{ product.descripcion }}</p>
+            
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-2xl font-bold text-green-600">
+                ${{ product.precio.toFixed(2) }}
+              </span>
+              
+              @if (product.disponible !== undefined) {
+                <span [class]="product.disponible 
+                  ? 'text-green-600 text-sm font-medium'
+                  : 'text-red-600 text-sm font-medium'">
+                  {{ product.disponible ? 'Disponible' : 'No disponible' }}
+                </span>
+              }
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-2">
+              <a [routerLink]="['/admin/products/edit', product.id]"
+                 class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-center transition-colors">
+                Editar
+              </a>
+              <button (click)="confirmDelete(product)"
+                      class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (filteredProducts().length === 0) {
+      <div class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+        </svg>
+        <p class="mt-4 text-lg text-gray-500">
+          {{ selectedCategory() ? 'No hay productos en esta categoría' : 'No hay productos registrados' }}
+        </p>
+        <a routerLink="/admin/products/new" class="text-green-600 hover:underline mt-2 inline-block">
+          Crear el primer producto
+        </a>
+      </div>
+    }
+  }
+</div>
+
+<!-- Delete Confirmation Modal -->
+@if (showDeleteModal()) {
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+      <h3 class="text-lg font-semibold mb-4">Confirmar Eliminación</h3>
+      <p class="text-gray-600 mb-6">
+        ¿Estás seguro de que deseas eliminar el producto 
+        <strong>{{ productoToDelete()?.nombre }}</strong>?
+      </p>
+      <div class="flex justify-end gap-3">
+        <button (click)="cancelDelete()"
+                class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+          Cancelar
+        </button>
+        <button (click)="deleteProducto()"
+                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+}

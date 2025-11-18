@@ -7,23 +7,37 @@ import { Producto } from '../models/producto.model';
   providedIn: 'root'
 })
 export class ProductoService {
-  private apiUrl = 'http://localhost:3000/productos';
+  private apiUrl = 'http://localhost:3000/api/products';
 
   constructor(private http: HttpClient) {}
 
-  getProductos(): Observable<Producto[]> {
+  getAllProducts(): Observable<Producto[]> {
     return this.http.get<Producto[]>(this.apiUrl);
   }
 
-  addProducto(producto: Producto): Observable<Producto> {
-    return this.http.post<Producto>(this.apiUrl, producto);
+  getProductById(id: number): Observable<Producto> {
+    return this.http.get<Producto>(`${this.apiUrl}/${id}`);
   }
 
-  updateProducto(id: number, producto: Producto): Observable<Producto> {
-    return this.http.put<Producto>(`${this.apiUrl}/${id}`, producto);
+  createProduct(product: Producto): Observable<Producto> {
+    return this.http.post<Producto>(this.apiUrl, product);
   }
 
-  deleteProducto(id: number): Observable<void> {
+  updateProduct(id: number, product: Partial<Producto>): Observable<Producto> {
+    return this.http.put<Producto>(`${this.apiUrl}/${id}`, product);
+  }
+
+  deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  uploadProductImage(file: File): Observable<{url: string}> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<{url: string}>(`${this.apiUrl}/upload`, formData);
+  }
+
+  getProductsByCategory(categoria: string): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${this.apiUrl}/category/${categoria}`);
   }
 }

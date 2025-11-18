@@ -5,4 +5,5 @@ export interface Producto {
   categoria: string;
   descripcion: string;
   imagen: string;
+  disponible?: boolean; 
 }
