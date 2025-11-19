@@ -1,190 +1,178 @@
-<div class="container mx-auto px-4 py-8 max-w-3xl">
+<div class="min-h-screen bg-gray-800 text-white py-8">
+  <div class="container mx-auto px-4 max-w-3xl">
 
-  <!-- Header -->
-  <div class="mb-8">
-    <div class="flex items-center gap-4 mb-4">
-      <button (click)="goBack()" class="text-gray-600 hover:text-gray-900">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
-      </button>
+    <div class="mb-8">
+      <div class="flex items-center gap-4 mb-4">
+        <button (click)="goBack()" class="text-gray-400 hover:text-white transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        </button>
 
-      <h1 class="text-3xl font-bold text-gray-800">
-        {{ isEditMode() ? 'Editar Producto' : 'Nuevo Producto' }}
-      </h1>
+        <h1 class="text-3xl font-bold text-white">
+          {{ isEditMode() ? 'Editar Producto' : 'Nuevo Producto' }}
+        </h1>
+      </div>
     </div>
-  </div>
 
-  <!-- Form -->
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="bg-white rounded-lg shadow-md p-6 space-y-6">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" 
+          class="bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl p-6 space-y-6 shadow-xl">
 
-    <!-- Image Upload -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Imagen del Producto</label>
+      <div>
+        <label class="block text-sm font-medium text-gray-300 mb-2">Imagen del Producto</label>
 
-      <div class="flex items-start gap-4">
-        <!-- Preview -->
-        <div class="flex-shrink-0">
-          @if (previewUrl()) {
-            <img [src]="previewUrl()" class="w-40 h-40 rounded-lg object-cover border-2 border-gray-200">
-          } @else {
-            <div class="w-40 h-40 rounded-lg bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300">
-              <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0">
+            @if (previewUrl()) {
+              <img [src]="previewUrl()" class="w-40 h-40 rounded-lg object-cover border-2 border-gray-600">
+            } @else {
+              <div class="w-40 h-40 rounded-lg bg-gray-900 flex items-center justify-center border-2 border-dashed border-gray-600">
+                <svg class="w-16 h-16 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+              </div>
+            }
+          </div>
+
+          <div class="flex-1">
+            <label class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors border border-gray-600">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
               </svg>
-            </div>
+              Subir Imagen
+              <input type="file" class="hidden" accept="image/*" (change)="onFileSelected($event)">
+            </label>
+
+            @if (selectedFile()) {
+              <div class="mt-3 flex items-center gap-2 text-green-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span class="text-sm">{{ selectedFile()?.name }}</span>
+              </div>
+            }
+
+            <p class="mt-2 text-sm text-gray-400">PNG, JPG, GIF hasta 10MB</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Nombre del Producto *</label>
+          <input type="text" formControlName="nombre"
+            class="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Ej: Café Latte">
+
+          @if (productForm.get('nombre')?.invalid && productForm.get('nombre')?.touched) {
+            <p class="mt-1 text-sm text-red-400">El nombre es requerido</p>
           }
         </div>
 
-        <!-- Upload Button -->
-        <div class="flex-1">
-          <label class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-            </svg>
-            Subir Imagen
-            <input type="file" class="hidden" accept="image/*" (change)="onFileSelected($event)">
-          </label>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Precio *</label>
 
-          <!-- Mostrar nombre del archivo seleccionado -->
-          @if (selectedFile()) {
-            <div class="mt-3 flex items-center gap-2 text-green-600">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-              </svg>
-              <span class="text-sm">{{ selectedFile()?.name }}</span>
-            </div>
+          <div class="relative">
+            <span class="absolute left-3 top-2 text-gray-400 text-lg">$</span>
+            <input type="number" formControlName="precio" step="0.01" min="0"
+              class="w-full pl-8 pr-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="0.00">
+          </div>
+
+          @if (productForm.get('precio')?.invalid && productForm.get('precio')?.touched) {
+            <p class="mt-1 text-sm text-red-400">El precio es requerido y debe ser mayor a 0</p>
           }
-
-          <p class="mt-2 text-sm text-gray-500">PNG, JPG, GIF hasta 10MB</p>
         </div>
+
       </div>
-    </div>
 
-    <!-- Nombre y Precio -->
-    <div class="grid md:grid-cols-2 gap-6">
+      <div class="grid md:grid-cols-2 gap-6">
 
-      <!-- Nombre -->
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Categoría *</label>
+
+          <select formControlName="categoria"
+            class="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            <option value="" class="bg-gray-900 text-gray-400">Selecciona una categoría</option>
+            <option value="bebida" class="bg-gray-900">☕ Bebida</option>
+            <option value="postre" class="bg-gray-900">🍰 Postre</option>
+            <option value="snack" class="bg-gray-900">🥐 Snack</option>
+            <option value="otros" class="bg-gray-900">🍽️ Otros</option>
+          </select>
+
+          @if (productForm.get('categoria')?.invalid && productForm.get('categoria')?.touched) {
+            <p class="mt-1 text-sm text-red-400">Selecciona una categoría</p>
+          }
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Disponibilidad</label>
+
+          <div class="flex items-center h-10">
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" formControlName="disponible" class="sr-only peer">
+
+              <div
+                class="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:bg-green-600
+                       after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                       after:bg-white after:w-5 after:h-5 after:rounded-full
+                       peer-checked:after:translate-x-full after:transition-all border border-gray-600 peer-checked:border-green-600">
+              </div>
+
+              <span class="ml-3 text-sm font-medium text-gray-300">
+                {{ productForm.get('disponible')?.value ? 'Disponible' : 'No disponible' }}
+              </span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Producto *</label>
-        <input type="text" formControlName="nombre"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-          placeholder="Ej: Café Latte">
+        <label class="block text-sm font-medium text-gray-300 mb-2">Descripción *</label>
 
-        @if (productForm.get('nombre')?.invalid && productForm.get('nombre')?.touched) {
-          <p class="mt-1 text-sm text-red-600">El nombre es requerido</p>
+        <textarea formControlName="descripcion" rows="4"
+          class="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+          placeholder="Describe el producto..."></textarea>
+
+        @if (productForm.get('descripcion')?.invalid && productForm.get('descripcion')?.touched) {
+          <p class="mt-1 text-sm text-red-400">La descripción es requerida</p>
         }
       </div>
 
-      <!-- Precio -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Precio *</label>
-
-        <div class="relative">
-          <span class="absolute left-3 top-2 text-gray-500 text-lg">$</span>
-          <input type="number" formControlName="precio" step="0.01" min="0"
-            class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500"
-            placeholder="0.00">
+      @if (errorMessage()) {
+        <div class="bg-red-900/30 border border-red-500/50 text-red-200 px-4 py-3 rounded-lg backdrop-blur-sm">
+          {{ errorMessage() }}
         </div>
-
-        @if (productForm.get('precio')?.invalid && productForm.get('precio')?.touched) {
-          <p class="mt-1 text-sm text-red-600">El precio es requerido y debe ser mayor a 0</p>
-        }
-      </div>
-
-    </div>
-
-    <!-- Categoría y Disponibilidad -->
-    <div class="grid md:grid-cols-2 gap-6">
-
-      <!-- Categoría -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
-
-        <select formControlName="categoria"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500">
-          <option value="">Selecciona una categoría</option>
-          <option value="bebida">☕ Bebida</option>
-          <option value="postre">🍰 Postre</option>
-          <option value="snack">🥐 Snack</option>
-          <option value="otros">🍽️ Otros</option>
-        </select>
-
-        @if (productForm.get('categoria')?.invalid && productForm.get('categoria')?.touched) {
-          <p class="mt-1 text-sm text-red-600">Selecciona una categoría</p>
-        }
-      </div>
-
-      <!-- Disponibilidad -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Disponibilidad</label>
-
-        <div class="flex items-center h-10">
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" formControlName="disponible" class="sr-only peer">
-
-            <div
-              class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-green-600
-                     after:content-[''] after:absolute after:top-[2px] after:left-[2px]
-                     after:bg-white after:w-5 after:h-5 after:rounded-full
-                     peer-checked:after:translate-x-full after:transition-all">
-            </div>
-
-            <span class="ml-3 text-sm font-medium text-gray-700">
-              {{ productForm.get('disponible')?.value ? 'Disponible' : 'No disponible' }}
-            </span>
-          </label>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Descripción -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Descripción *</label>
-
-      <textarea formControlName="descripcion" rows="4"
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 resize-none"
-        placeholder="Describe el producto..."></textarea>
-
-      @if (productForm.get('descripcion')?.invalid && productForm.get('descripcion')?.touched) {
-        <p class="mt-1 text-sm text-red-600">La descripción es requerida</p>
       }
-    </div>
 
-    <!-- Error Message -->
-    @if (errorMessage()) {
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-        {{ errorMessage() }}
+      <div class="flex gap-3 pt-4">
+
+        <button type="button" (click)="goBack()"
+          class="flex-1 px-6 py-3 border border-gray-600 text-gray-300 rounded-lg hover:bg-white/5 hover:text-white transition-colors">
+          Cancelar
+        </button>
+
+        <button type="submit" [disabled]="productForm.invalid || submitting()"
+          class="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-500 disabled:bg-gray-600 disabled:text-gray-400 transition-colors shadow-lg shadow-green-900/20">
+
+          @if (submitting()) {
+            <span class="flex items-center justify-center gap-2">
+              <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              Guardando...
+            </span>
+          } @else {
+            {{ isEditMode() ? 'Actualizar' : 'Crear Producto' }}
+          }
+
+        </button>
+
       </div>
-    }
 
-    <!-- Acciones -->
-    <div class="flex gap-3 pt-4">
-
-      <button type="button" (click)="goBack()"
-        class="flex-1 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
-        Cancelar
-      </button>
-
-      <button type="submit" [disabled]="productForm.invalid || submitting()"
-        class="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400">
-
-        @if (submitting()) {
-          <span class="flex items-center justify-center gap-2">
-            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-            Guardando...
-          </span>
-        } @else {
-          {{ isEditMode() ? 'Actualizar' : 'Crear Producto' }}
-        }
-
-      </button>
-
-    </div>
-
-  </form>
+    </form>
+  </div>
 </div>
