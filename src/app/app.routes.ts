@@ -7,6 +7,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { LoginComponent } from './views/auth/login/login.component';
 import { RegisterComponent } from './views/auth/register/register.component';
 import { HomeComponent } from './views/public/home/home.component';
+import { ProductFormComponent } from './views/admin/product-management/product-form/product-form.component';
 
 export const routes: Routes = [
   // ========================================

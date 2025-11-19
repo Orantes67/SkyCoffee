@@ -1,11 +1,17 @@
 import { Component, OnInit, signal } from '@angular/core';
+import { RouterLink } from '@angular/router'; // Necesario para routerLink
+import { CommonModule } from '@angular/common'; // Necesario para directivas estructurales (@if, @for, etc.)
 import { ProductoService } from '../../../core/services/producto.service';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  standalone: true
+  standalone: true,
+  imports: [
+    CommonModule, // Asegura que las directivas estructurales funcionen (como @if o @for)
+    RouterLink,   // Habilita el uso de routerLink en la plantilla
+  ]
 })
 export class DashboardComponent implements OnInit {
   stats = signal({
@@ -17,24 +23,24 @@ export class DashboardComponent implements OnInit {
     avgPrice: '0.00'
   });
 
- 
+  
   constructor(
     private productService: ProductoService,
     private authService: AuthService
   ) {}
 
-get currentUser() {
-  return this.authService.currentUser;
-}
+  get currentUser() {
+    return this.authService.currentUser;
+  }
 
 
   ngOnInit() {
     this.loadStats();
   }
 
+  
   loadStats() {
     
-
     // Load products
     this.productService.getAllProducts().subscribe({
       next: (products) => {
