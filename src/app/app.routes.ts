@@ -4,10 +4,8 @@ import { adminGuard } from './core/guards/admin.guard';
 import { authGuard } from './core/guards/auth.guard';
 
 // Tus componentes existentes
-import { LandingComponent } from './views/landing/landing.component';
-import { LoginComponent } from './views/login/login.component';
+import { LoginComponent } from './views/auth/login/login.component';
 import { RegisterComponent } from './views/auth/register/register.component';
-import { usuarioFormComponent } from './views/admin/user-management/user-form/user-form.component';
 import { HomeComponent } from './views/public/home/home.component';
 
 export const routes: Routes = [
@@ -89,26 +87,7 @@ export const routes: Routes = [
           .then(m => m.DashboardComponent),
         title: 'Dashboard - Admin'
       },
-      
-      // Gestión de Usuarios
-      {
-        path: 'users',
-        loadComponent: () => import('./views/admin/user-management/user-list/user-list.component')
-          .then(m => m.UserListComponent),
-        title: 'Gestión de Usuarios'
-      },
-      {
-        path: 'users/new',
-        loadComponent: () => import('./views/admin/user-management/user-form/user-form.component')
-          .then(m => m.usuarioFormComponent),
-        title: 'Nuevo Usuario'
-      },
-      {
-        path: 'users/edit/:id',
-        loadComponent: () => import('./views/admin/user-management/user-form/user-form.component')
-          .then(m => m.usuarioFormComponent),
-        title: 'Editar Usuario'
-      },
+   
       
       // Gestión de Productos
       {

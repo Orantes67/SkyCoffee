@@ -1,7 +1,7 @@
 // src/app/core/services/auth.service.ts
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap, delay } from 'rxjs';
 import { Router } from '@angular/router';
 import { Usuario } from '../models/ usuario.model';
 import { AuthResponse, LoginRequest } from '../models/auth';
@@ -13,6 +13,9 @@ export class AuthService {
   private apiUrl = 'http://localhost:3000/api'; // Ajusta tu URL
   currentUser = signal<Usuario | null>(null);
 
+  // Para habilitar/deshabilitar mock
+  private useMock = true;
+
   constructor(
     private http: HttpClient,
     private router: Router
@@ -21,6 +24,10 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
+    if (this.useMock) {
+      return this.mockLogin(credentials);
+    }
+
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials)
       .pipe(
         tap(response => {
@@ -32,6 +39,10 @@ export class AuthService {
   }
 
   register(user: Usuario): Observable<AuthResponse> {
+    if (this.useMock) {
+      return this.mockRegister(user);
+    }
+
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, user)
       .pipe(
         tap(response => {
@@ -71,5 +82,41 @@ export class AuthService {
         localStorage.removeItem('currentUser');
       }
     }
+  }
+
+  // ================= MOCK =================
+  private mockLogin(credentials: LoginRequest): Observable<AuthResponse> {
+    // Definimos un usuario de ejemplo
+    const mockUser: Usuario = {
+      id: 1,
+      nombre: 'Ale',
+      telefono: '1234567890',
+      correo: 'ale@example.com',
+      rol: 'admin',
+      
+      // otros campos si aplica
+    };
+
+    const response: AuthResponse = {
+      token: 'mock-token-123456',
+      user: mockUser
+    };
+
+    return of(response).pipe(
+      delay(500), // simula retardo de la red
+      tap(res => this.setCurrentUser(res.user!))
+    );
+  }
+
+  private mockRegister(user: Usuario): Observable<AuthResponse> {
+    const response: AuthResponse = {
+      token: 'mock-token-654321',
+      user: { ...user, id: Math.floor(Math.random() * 1000) }
+    };
+
+    return of(response).pipe(
+      delay(500), // simula retardo de la red
+      tap(res => this.setCurrentUser(res.user!))
+    );
   }
 }

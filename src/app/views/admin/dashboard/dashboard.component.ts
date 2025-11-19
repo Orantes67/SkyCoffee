@@ -1,5 +1,4 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { UsuarioService } from '../../../core/services/usuario.service';
 import { ProductoService } from '../../../core/services/producto.service';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -10,9 +9,6 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class DashboardComponent implements OnInit {
   stats = signal({
-    totalUsers: 0,
-    adminUsers: 0,
-    clientUsers: 0,
     totalProducts: 0,
     availableProducts: 0,
     bebidas: 0,
@@ -23,7 +19,6 @@ export class DashboardComponent implements OnInit {
 
  
   constructor(
-    private usuarioService: UsuarioService,
     private productService: ProductoService,
     private authService: AuthService
   ) {}
@@ -38,20 +33,7 @@ get currentUser() {
   }
 
   loadStats() {
-    // Load users
-    this.usuarioService.getAllUsuarios().subscribe({
-      next: (users) => {
-        const adminCount = users.filter(u => u.rol === 'admin').length;
-        const clientCount = users.filter(u => u.rol === 'cliente').length;
-
-        this.stats.update(s => ({
-          ...s,
-          totalUsers: users.length,
-          adminUsers: adminCount,
-          clientUsers: clientCount
-        }));
-      }
-    });
+    
 
     // Load products
     this.productService.getAllProducts().subscribe({

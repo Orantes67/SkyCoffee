@@ -1,152 +1,101 @@
-<div class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 flex items-center justify-center px-4 py-12">
-  <div class="max-w-md w-full">
-
-    <!-- Title / Logo -->
+<section class="min-h-screen flex items-center justify-center bg-[#0d0d0d] px-6 py-12">
+  <div class="bg-[#1a1a1a] p-10 rounded-2xl w-full max-w-md border border-[#d4a056]/40 shadow-xl">
+    
+    <!-- Título / Logo -->
     <div class="text-center mb-8">
-      <div class="inline-block bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-full p-4 mb-4">
+      <div class="inline-block bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-full p-4 mb-4 shadow-lg">
         <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
         </svg>
       </div>
-
-      <h1 class="text-4xl font-bold text-gray-800 mb-2">Crear Cuenta</h1>
-      <p class="text-gray-600">Únete a SkyCoffee ☕</p>
+      <h2 class="text-3xl font-serif text-[#d4a056] mb-2">Crear Cuenta</h2>
+      <p class="text-gray-400">Únete a SkyCoffee ☕</p>
     </div>
 
-    <!-- Form -->
-    <div class="bg-white rounded-2xl shadow-2xl p-8">
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- Formulario -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
 
-        <!-- Nombre -->
-        <div class="mb-5">
-          <label class="block text-gray-700 font-semibold mb-2">Nombre Completo</label>
-          <input type="text" formControlName="nombre"
-            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-            placeholder="Juan Pérez">
-
-          @if (registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched) {
-          <p class="mt-2 text-sm text-red-600">El nombre es requerido</p>
-          }
-        </div>
-
-        <!-- Correo -->
-        <div class="mb-5">
-          <label class="block text-gray-700 font-semibold mb-2">Correo Electrónico</label>
-          <input type="email" formControlName="correo"
-            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-            placeholder="tu@email.com">
-
-          @if (registerForm.get('correo')?.invalid && registerForm.get('correo')?.touched) {
-          <p class="mt-2 text-sm text-red-600">
-            {{ registerForm.get('correo')?.errors?.['required'] ? 'El correo es requerido' :
-            'Ingresa un correo válido' }}
-          </p>
-          }
-        </div>
-
-        <!-- Teléfono -->
-        <div class="mb-5">
-          <label class="block text-gray-700 font-semibold mb-2">Teléfono</label>
-          <input type="tel" formControlName="telefono"
-            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-            placeholder="123-456-7890">
-
-          @if (registerForm.get('telefono')?.invalid && registerForm.get('telefono')?.touched) {
-          <p class="mt-2 text-sm text-red-600">El teléfono es requerido</p>
-          }
-        </div>
-
-        <!-- Password -->
-        <div class="mb-5">
-          <label class="block text-gray-700 font-semibold mb-2">Contraseña</label>
-
-          <div class="relative">
-            <input [type]="showPassword() ? 'text' : 'password'" formControlName="password"
-              class="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-lg focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-              placeholder="••••••••">
-
-            <button type="button" (click)="togglePassword()"
-              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
-
-              @if (showPassword()) {
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-              </svg>
-              } @else {
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              }
-            </button>
-          </div>
-
-          @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
-          <p class="mt-2 text-sm text-red-600">La contraseña debe tener al menos 6 caracteres</p>
-          }
-
-          <!-- Barra de fortaleza -->
-          @if (registerForm.get('password')?.value) {
-          <div class="mt-2">
-            <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
-              <div [class]="getPasswordStrengthClass()" class="h-full transition-all duration-300"></div>
-            </div>
-            <p [class]="getPasswordStrengthTextClass()" class="text-xs mt-1">
-              {{ getPasswordStrengthText() }}
-            </p>
-          </div>
-          }
-        </div>
-
-        <!-- Error -->
-        @if (errorMessage()) {
-        <div class="mb-5 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-          <p class="text-sm text-red-700">{{ errorMessage() }}</p>
-        </div>
-        }
-
-        <!-- Success -->
-        @if (successMessage()) {
-        <div class="mb-5 bg-green-50 border-l-4 border-green-500 p-4 rounded">
-          <p class="text-sm text-green-700">{{ successMessage() }}</p>
-        </div>
-        }
-
-        <!-- Submit -->
-        <button type="submit" [disabled]="registerForm.invalid || loading()"
-          class="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-lg font-semibold 
-                 hover:from-amber-700 hover:to-orange-700 transition-all transform hover:scale-[1.02] 
-                 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg">
-          @if (loading()) {
-          <span class="flex items-center justify-center gap-2">
-            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-            Creando cuenta...
-          </span>
-          } @else {
-          Crear Cuenta
-          }
-        </button>
-      </form>
-
-      <!-- Divider -->
-      <div class="my-6 flex items-center">
-        <div class="flex-1 border-t border-gray-300"></div>
-        <span class="px-4 text-gray-500 text-sm">o</span>
-        <div class="flex-1 border-t border-gray-300"></div>
+      <!-- Nombre -->
+      <div>
+        <label class="text-sm text-gray-300">Nombre Completo</label>
+        <input type="text" formControlName="nombre"
+               class="w-full mt-1 p-3 bg-black/40 border border-gray-700 rounded-md text-white 
+                      focus:border-[#d4a056] focus:ring-2 focus:ring-[#d4a056]/30 focus:outline-none">
+        <p *ngIf="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched" 
+           class="text-red-500 text-sm mt-1">El nombre es requerido</p>
       </div>
 
-      <!-- Link login -->
-      <p class="text-center text-gray-600">
-        ¿Ya tienes cuenta?
-        <a routerLink="/login" class="text-amber-600 hover:text-amber-700 font-semibold hover:underline">
-          Inicia sesión aquí
-        </a>
-      </p>
+      <!-- Correo -->
+      <div>
+        <label class="text-sm text-gray-300">Correo Electrónico</label>
+        <input type="email" formControlName="correo"
+               class="w-full mt-1 p-3 bg-black/40 border border-gray-700 rounded-md text-white 
+                      focus:border-[#d4a056] focus:ring-2 focus:ring-[#d4a056]/30 focus:outline-none">
+        <p *ngIf="registerForm.get('correo')?.invalid && registerForm.get('correo')?.touched" 
+           class="text-red-500 text-sm mt-1">
+          {{ registerForm.get('correo')?.errors?.['required'] ? 'El correo es requerido' : 'Ingresa un correo válido' }}
+        </p>
+      </div>
 
-    </div>
+      <!-- Teléfono -->
+      <div>
+        <label class="text-sm text-gray-300">Teléfono</label>
+        <input type="tel" formControlName="telefono"
+               class="w-full mt-1 p-3 bg-black/40 border border-gray-700 rounded-md text-white 
+                      focus:border-[#d4a056] focus:ring-2 focus:ring-[#d4a056]/30 focus:outline-none">
+        <p *ngIf="registerForm.get('telefono')?.invalid && registerForm.get('telefono')?.touched" 
+           class="text-red-500 text-sm mt-1">El teléfono es requerido</p>
+      </div>
+
+      <!-- Contraseña -->
+      <div>
+        <label class="text-sm text-gray-300">Contraseña</label>
+        <div class="relative">
+          <input [type]="showPassword() ? 'text' : 'password'" formControlName="password"
+                 class="w-full mt-1 p-3 pr-12 bg-black/40 border border-gray-700 rounded-md text-white 
+                        focus:border-[#d4a056] focus:ring-2 focus:ring-[#d4a056]/30 focus:outline-none">
+          <button type="button" (click)="togglePassword()"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-200">
+            <svg *ngIf="showPassword()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242"/>
+            </svg>
+            <svg *ngIf="!showPassword()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Error / Success -->
+      <div *ngIf="errorMessage()" class="bg-red-50 border-l-4 border-red-500 p-4 rounded text-red-700 text-sm">
+        {{ errorMessage() }}
+      </div>
+      <div *ngIf="successMessage()" class="bg-green-50 border-l-4 border-green-500 p-4 rounded text-green-700 text-sm">
+        {{ successMessage() }}
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" [disabled]="registerForm.invalid || loading()"
+              class="w-full py-3 bg-[#d4a056] text-black font-semibold rounded-lg hover:bg-[#c28e40] 
+                     transition transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
+        <span *ngIf="loading()" class="flex items-center justify-center gap-2">
+          <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-black"></div>
+          Creando cuenta...
+        </span>
+        <span *ngIf="!loading()">Crear Cuenta</span>
+      </button>
+    </form>
+
+    <!-- Link login -->
+    <p class="text-center text-gray-400 text-sm mt-6">
+      ¿Ya tienes cuenta? 
+      <a routerLink="/login" class="text-[#d4a056] hover:underline font-semibold">Inicia sesión aquí</a>
+    </p>
+
   </div>
-</div>
+</section>

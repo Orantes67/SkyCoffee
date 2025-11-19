@@ -7,13 +7,20 @@ import { AuthService } from '../../../core/services/auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule,  // ⭐ CRÍTICO: Debe estar aquí
+    RouterLink
+  ],
   templateUrl: './login.component.html'
 })
 export class LoginComponent {
-  loginForm: FormGroup;
+  // ✅ FormGroup debe ser inicializado en el constructor
+  loginForm!: FormGroup;
+  
+  // ✅ Signals para el estado reactivo
   loading = signal(false);
-  errorMessage = signal<string | null>(null);
+  errorMessage = signal<string>('');
   showPassword = signal(false);
 
   constructor(
@@ -21,34 +28,58 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router
   ) {
+    // ✅ Inicializar el formulario aquí
     this.loginForm = this.fb.group({
       correo: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
-  togglePassword() {
+  togglePassword(): void {
     this.showPassword.update(val => !val);
   }
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      this.loading.set(true);
-      this.errorMessage.set(null);
-
-      this.authService.login(this.loginForm.value).subscribe({
-        next: (response) => {
-          if (response.user.rol === 'admin') {
-            this.router.navigate(['/admin/dashboard']);
-          } else {
-            this.router.navigate(['/menu']);
-          }
-        },
-        error: () => {
-          this.loading.set(false);
-          this.errorMessage.set('Correo o contraseña incorrectos');
-        }
+  onSubmit(): void {
+    // Marcar todos los campos como touched para mostrar errores
+    if (this.loginForm.invalid) {
+      Object.keys(this.loginForm.controls).forEach(key => {
+        this.loginForm.get(key)?.markAsTouched();
       });
+      return;
     }
+
+    this.loading.set(true);
+    this.errorMessage.set('');
+
+    const credentials = this.loginForm.value;
+
+    this.authService.login(credentials).subscribe({
+      next: (response) => {
+        this.loading.set(false);
+        
+        // Redirigir según el rol
+        if (response.user.rol === 'admin') {
+          this.router.navigate(['/admin/dashboard']);
+        } else {
+          this.router.navigate(['/menu']);
+        }
+      },
+      error: (error) => {
+        this.loading.set(false);
+        this.errorMessage.set(
+          error.error?.message || 'Correo o contraseña incorrectos'
+        );
+        
+        // Opcional: Limpiar el password por seguridad
+        this.loginForm.get('password')?.reset();
+      }
+    });
+  }
+
+  // Método helper para debugging (puedes eliminarlo después)
+  logFormStatus(): void {
+    console.log('Form Valid:', this.loginForm.valid);
+    console.log('Form Value:', this.loginForm.value);
+    console.log('Form Errors:', this.loginForm.errors);
   }
 }

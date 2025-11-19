@@ -1,139 +1,129 @@
-<div class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 flex items-center justify-center px-4">
-  <div class="max-w-md w-full">
+<section class="min-h-screen flex items-center justify-center bg-[#0d0d0d] px-6 py-12">
+  <div class="bg-[#1a1a1a] p-10 rounded-2xl w-full max-w-md border border-[#d4a056]/40 shadow-xl">
 
     <!-- Logo & Title -->
     <div class="text-center mb-8">
-      <div class="inline-block bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-full p-4 mb-4">
+      <div class="inline-block bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-full p-4 mb-4 shadow-lg">
         <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
         </svg>
       </div>
-      <h1 class="text-4xl font-bold text-gray-800 mb-2">☕ SkyCoffee</h1>
-      <p class="text-gray-600">Inicia sesión en tu cuenta</p>
+      <h2 class="text-3xl font-serif text-[#d4a056] mb-2">☕ SkyCoffee</h2>
+      <p class="text-gray-400">Inicia sesión en tu cuenta</p>
     </div>
 
     <!-- Login Form -->
-    <div class="bg-white rounded-2xl shadow-2xl p-8">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off" class="space-y-6">
 
-        <!-- Email -->
-        <div class="mb-6">
-          <label class="block text-gray-700 font-semibold mb-2">Correo Electrónico</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-              </svg>
-            </div>
-
-            <input type="email" formControlName="correo"
-              class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-              placeholder="tu@email.com">
+      <!-- Correo Electrónico -->
+      <div>
+        <label for="correo" class="text-sm text-gray-300 font-medium mb-1 block">Correo Electrónico</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="w-5 h-5 text-[#d4a056]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zM12 12v1.5a2.5 2.5 0 005 0V12"/>
+            </svg>
           </div>
-
-          @if (loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched) {
-            <p class="mt-2 text-sm text-red-600">
-              {{ loginForm.get('correo')?.errors?.['required'] ? 'El correo es requerido' : 'Ingresa un correo válido' }}
-            </p>
-          }
+          <input id="correo" type="email" formControlName="correo" autocomplete="username"
+                 class="w-full pl-10 pr-4 py-3 bg-black/40 border border-gray-700 rounded-md text-white 
+                        focus:border-[#d4a056] focus:ring-2 focus:ring-[#d4a056]/30 focus:outline-none 
+                        transition duration-200"
+                 placeholder="tu@email.com"
+                 [class.border-red-500]="loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched">
         </div>
-
-        <!-- Password -->
-        <div class="mb-6">
-          <label class="block text-gray-700 font-semibold mb-2">Contraseña</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-            </div>
-
-            <input [type]="showPassword() ? 'text' : 'password'" formControlName="password"
-              class="w-full pl-10 pr-12 py-3 border-2 border-gray-200 rounded-lg focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all"
-              placeholder="••••••••">
-
-            <button type="button" (click)="togglePassword()"
-              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
-
-              @if (showPassword()) {
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                </svg>
-              } @else {
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-              }
-            </button>
-          </div>
-
-          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-            <p class="mt-2 text-sm text-red-600">La contraseña es requerida</p>
-          }
-        </div>
-
-        <!-- Error Message -->
-        @if (errorMessage()) {
-          <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-            <div class="flex">
-              <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clip-rule="evenodd" />
-              </svg>
-              <p class="text-sm text-red-700">{{ errorMessage() }}</p>
-            </div>
-          </div>
-        }
-
-        <!-- Submit Button -->
-        <button type="submit" [disabled]="loginForm.invalid || loading()"
-          class="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-lg font-semibold
-                 hover:from-amber-700 hover:to-orange-700 transition-all transform hover:scale-[1.02]
-                 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg">
-          @if (loading()) {
-            <span class="flex items-center justify-center gap-2">
-              <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-              Iniciando sesión...
-            </span>
-          } @else {
-            Iniciar Sesión
-          }
-        </button>
-      </form>
-
-      <!-- Divider -->
-      <div class="my-6 flex items-center">
-        <div class="flex-1 border-t border-gray-300"></div>
-        <span class="px-4 text-gray-500 text-sm">o</span>
-        <div class="flex-1 border-t border-gray-300"></div>
-      </div>
-
-      <!-- Register Link -->
-      <p class="text-center text-gray-600">
-        ¿No tienes cuenta?
-        <a routerLink="/register" class="text-amber-600 hover:text-amber-700 font-semibold hover:underline">
-          Regístrate aquí
-        </a>
-      </p>
-
-      <!-- Back to Menu -->
-      <div class="mt-6 text-center">
-        <a routerLink="/menu" class="text-gray-500 hover:text-gray-700 text-sm flex items-center justify-center gap-1">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        <p *ngIf="loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched" class="mt-2 text-sm text-red-500 flex items-center gap-1">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                  clip-rule="evenodd"/>
           </svg>
-          Volver al menú
-        </a>
+          {{ loginForm.get('correo')?.errors?.['required'] ? 'El correo es requerido' : 'Ingresa un correo válido' }}
+        </p>
       </div>
 
+      <!-- Contraseña -->
+      <div>
+        <label for="password" class="text-sm text-gray-300 font-medium mb-1 block">Contraseña</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+          </div>
+          <input id="password" [type]="showPassword() ? 'text' : 'password'" formControlName="password"
+                 autocomplete="current-password"
+                 class="w-full pl-10 pr-12 py-3 bg-black/40 border border-gray-700 rounded-md text-white
+                        focus:border-[#d4a056] focus:ring-2 focus:ring-[#d4a056]/30 focus:outline-none
+                        transition duration-200"
+                 placeholder="••••••••"
+                 [class.border-red-500]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          <button type="button" (click)="togglePassword()"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-200 transition-colors"
+                  aria-label="Mostrar/Ocultar contraseña">
+            <svg *ngIf="showPassword()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243"/>
+            </svg>
+            <svg *ngIf="!showPassword()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+          </button>
+        </div>
+        <p *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+           class="mt-2 text-sm text-red-500 flex items-center gap-1">
+          {{ loginForm.get('password')?.errors?.['required'] ? 'La contraseña es requerida' : 'Mínimo 6 caracteres' }}
+        </p>
+      </div>
+
+      <!-- Mensaje de Error General -->
+      <div *ngIf="errorMessage()" class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg animate-shake text-red-700 text-sm">
+        {{ errorMessage() }}
+      </div>
+
+      <!-- Botón Submit -->
+      <button type="submit" [disabled]="loginForm.invalid || loading()"
+              class="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 px-4 rounded-lg font-semibold text-lg
+                     hover:from-amber-700 hover:to-orange-700 focus:outline-none focus:ring-4 focus:ring-amber-300
+                     transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]
+                     disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl">
+        <span *ngIf="loading()" class="flex items-center justify-center gap-2">
+          <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+          Iniciando sesión...
+        </span>
+        <span *ngIf="!loading()" class="flex items-center justify-center gap-2">Iniciar Sesión</span>
+      </button>
+    </form>
+
+    <!-- Divider -->
+    <div class="my-6 flex items-center">
+      <div class="flex-1 border-t border-gray-600"></div>
+      <span class="px-4 text-gray-500 text-sm font-medium">o</span>
+      <div class="flex-1 border-t border-gray-600"></div>
     </div>
+
+    <!-- Links -->
+    <p class="text-center text-gray-400 text-sm">
+      ¿No tienes cuenta?
+      <a routerLink="/register" class="text-[#d4a056] hover:underline font-semibold ml-1">Regístrate aquí</a>
+    </p>
+
+    <div class="mt-6 text-center">
+      <a routerLink="/menu" class="text-gray-500 hover:text-gray-400 text-sm font-medium inline-flex items-center gap-1 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Volver al menú
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-8 text-center text-gray-500 text-sm">
+      <p>© 2024 SkyCoffee. Todos los derechos reservados.</p>
+    </div>
+
   </div>
-</div>
+</section>
