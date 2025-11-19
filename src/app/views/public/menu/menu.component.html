@@ -15,31 +15,32 @@
   <div class="container mx-auto px-4 py-12">
 
     <!-- Category Filter -->
-    <div class="flex justify-center gap-3 mb-12 flex-wrap">
-      <button (click)="filterByCategory(null)"
-              [class]="getCategoryButtonClass(null)"
-              class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 bg-white/10 backdrop-blur-xl border border-white/10 text-gray-200 hover:text-white hover:bg-white/20">
-        Todos
-      </button>
+<!-- Category Filter -->
+<div class="flex justify-center gap-3 mb-12 flex-wrap">
+  <button (click)="filterByCategory(null)"
+          [class]="getCategoryButtonClass(null)"
+          class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 bg-white/10 backdrop-blur-xl border border-white/10 text-white hover:bg-white/20">
+    Todos
+  </button>
 
-      <button (click)="filterByCategory('bebida')"
-              [class]="getCategoryButtonClass('bebida')"
-              class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 bg-white/10 backdrop-blur-xl border border-white/10 text-gray-200 hover:bg-amber-600/40 hover:text-white">
-        ☕ Bebidas
-      </button>
+  <button (click)="filterByCategory('bebida')"
+          [class]="getCategoryButtonClass('bebida')"
+          class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 bg-white/10 backdrop-blur-xl border border-white/10 text-white hover:bg-amber-600/40">
+    ☕ Bebidas
+  </button>
 
-      <button (click)="filterByCategory('postre')"
-              [class]="getCategoryButtonClass('postre')"
-              class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 bg-white/10 backdrop-blur-xl border border-white/10 text-gray-200 hover:bg-pink-600/40 hover:text-white">
-        🍰 Postres
-      </button>
+  <button (click)="filterByCategory('postre')"
+          [class]="getCategoryButtonClass('postre')"
+          class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 bg-white/10 backdrop-blur-xl border border-white/10 text-white hover:bg-pink-600/40">
+    🍰 Postres
+  </button>
 
-      <button (click)="filterByCategory('snack')"
-              [class]="getCategoryButtonClass('snack')"
-              class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 bg-white/10 backdrop-blur-xl border border-white/10 text-gray-200 hover:bg-green-600/40 hover:text-white">
-        🥐 Snacks
-      </button>
-    </div>
+  <button (click)="filterByCategory('snack')"
+          [class]="getCategoryButtonClass('snack')"
+          class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 bg-white/10 backdrop-blur-xl border border-white/10 text-white hover:bg-green-600/40">
+    🥐 Snacks
+  </button>
+</div>
 
     <!-- Loading -->
     @if (loading()) {
