@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators'; // ⬅️ Importar el operador tap
   providedIn: 'root'
 })
 export class ProductoService {
-  private apiUrl = 'http://54.84.254.166/api/producto';
+  private apiUrl = 'https://skycoffe-api.duckdns.org/api/producto';
 
   constructor(private http: HttpClient) {}
 
